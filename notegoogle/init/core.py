@@ -5,6 +5,10 @@ from google.colab import drive
 dir_root = '/content/drive/My Drive/home'
 
 
+def run(cmd):
+    os.system(cmd)
+
+
 def install_drive():
     drive.mount('/content/drive')
     os.chdir(dir_root)
@@ -30,7 +34,7 @@ def default_import():
 def copy_files():
     path_f = dir_root + '/local_files'
     path_t = '/root'
-    os.system("cp '{}' {}".format(path_f, path_t))
+    run("cp '{}' {}".format(path_f, path_t))
 
 
 def init():
