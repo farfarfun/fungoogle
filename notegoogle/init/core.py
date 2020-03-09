@@ -33,9 +33,10 @@ def default_import():
 
 
 def copy_files():
-    path_f = dir_root + '/local_files'
-    path_t = '/root'
-    run("cp '{}' {}".format(path_f, path_t))
+    path_f = dir_root + '/local_files/'
+    path_t = '/root/'
+    run("cp -r '{}' {}".format(path_f, path_t))
+    run("cp -r '{}.' {}".format(path_f, path_t))
 
 
 def init():
