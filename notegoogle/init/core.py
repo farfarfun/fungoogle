@@ -29,7 +29,7 @@ def default_import():
 
 def copy_files():
     path_f = dir_root + '/local_files'
-    path_t = '~'
+    path_t = '/root'
     os.system("cp '{}' {}".format(path_f, path_t))
 
 
