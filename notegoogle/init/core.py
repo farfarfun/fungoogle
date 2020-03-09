@@ -6,6 +6,7 @@ dir_root = '/content/drive/My Drive/home'
 
 
 def run(cmd):
+    print(cmd)
     os.system(cmd)
 
 
