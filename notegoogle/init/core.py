@@ -3,6 +3,7 @@ import os
 from google.colab import drive
 
 dir_root = '/content/drive/My Drive/home'
+workspace = '/root/workspace'
 
 
 def run(cmd):
@@ -12,19 +13,17 @@ def run(cmd):
 
 def install_drive():
     drive.mount('/content/drive')
-    os.chdir(dir_root)
+    run('mkdir {}'.format(workspace))
+    os.chdir(workspace)
 
 
 def install_bash():
-    os.system('source notegoogle/init/bashrc.sh')
+    run('source notegoogle/init/bashrc.sh')
 
 
 def packages():
-    print('install begin')
-    os.system(
-        "pip install -U --target='/content/drive/My Drive/home/packages' git+https://github.com/notechats/notetool.git")
-    os.system("pip install -U --target='/content/drive/My Drive/home/packages'    kaggle")
-    print('install end')
+    run("pip install -U --target='/content/drive/My Drive/home/packages' git+https://github.com/notechats/notetool.git")
+    run("pip install -U --target='/content/drive/My Drive/home/packages' kaggle")
 
 
 def default_import():
