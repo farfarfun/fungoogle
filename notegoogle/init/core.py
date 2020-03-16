@@ -20,8 +20,9 @@ def install_bash():
 
 
 def packages():
-    os.system("pip install --target='/content/drive/My Drive/home/packages'    notetool")
-    os.system("pip install --target='/content/drive/My Drive/home/packages'    kaggle")
+    os.system(
+        "pip install -U --target='/content/drive/My Drive/home/packages' git+https://github.com/notechats/notetool.git")
+    os.system("pip install -U --target='/content/drive/My Drive/home/packages'    kaggle")
 
 
 def default_import():
