@@ -22,8 +22,11 @@ def install_bash():
 
 
 def packages():
-    run("pip install -U --target='/content/drive/My Drive/home/packages' git+https://github.com/notechats/notetool.git")
-    run("pip install -U --target='/content/drive/My Drive/home/packages' kaggle")
+    # run("pip install -U --target='/content/drive/My Drive/home/packages' git+https://github.com/notechats/notetool.git")
+    # run("pip install -U --target='/content/drive/My Drive/home/packages' kaggle")
+    run("pip install -U  git+https://github.com/notechats/notetool.git")
+    run("pip install -U  kaggle")
+    pass
 
 
 def default_import():
