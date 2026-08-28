@@ -18,7 +18,7 @@ def install_drive():
 
 
 def install_bash():
-    run('source notegoogle/init/bashrc.sh')
+    run('source fungoogle/init/bashrc.sh')
 
 
 def packages():
