@@ -9,6 +9,11 @@ license-files = ["LICENSE"]
 authors = [{ name = "牛哥", email = "farfarfun@qq.com" }]
 dependencies = ["farlog>=1.1.7", "funshell>=1.0.23"]
 
+[project.optional-dependencies]
+# packages() 在 Colab notebook 运行时额外安装的个人常用包，仅用于声明版本下限、
+# 供依赖扫描工具识别；实际安装动作仍由 packages() 在 notebook 里触发（见该函数注释）。
+colab = ["farfuntool>=0.6.22", "kaggle>=1.6.17"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

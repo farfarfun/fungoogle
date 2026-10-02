@@ -46,10 +46,19 @@ def install_bash() -> None:
     run(f"source {bashrc}")
 
 
+# 与 pyproject.toml 的 [project.optional-dependencies].colab 保持一致，
+# 改动版本下限时两处一起改。
+_COLAB_PACKAGES = ("farfuntool>=0.6.22", "kaggle>=1.6.17")
+
+
 def packages() -> None:
-    """安装 Colab 环境缺省的个人常用依赖（funtool、kaggle）。"""
-    run("pip install -U git+https://github.com/farfarfun/funtool.git")
-    run("pip install -U kaggle")
+    """安装 Colab 环境缺省的个人常用依赖（farfuntool，导入名 funtool；kaggle）。
+
+    版本下限声明见 pyproject.toml 的 colab extra；这里固定版本号而非裸 `-U`，
+    避免每次运行都静默拉取未知的最新版本。
+    """
+    for package in _COLAB_PACKAGES:
+        run(f"pip install -U '{package}'")
 
 
 def default_import() -> None:

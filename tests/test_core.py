@@ -25,13 +25,15 @@ def test_run_failure_raises_with_context() -> None:
         core.run("echo hi")
 
 
-def test_packages_installs_funtool_and_kaggle() -> None:
-    """packages() 应依次安装 funtool 与 kaggle。"""
+def test_packages_installs_farfuntool_and_kaggle_with_version_floor() -> None:
+    """packages() 应依次安装带版本下限的 farfuntool 与 kaggle，不再裸装最新版。"""
     with patch("fungoogle.init.core.run") as mock_run:
         core.packages()
     commands = [call.args[0] for call in mock_run.call_args_list]
-    assert any("funtool" in cmd for cmd in commands)
-    assert any("kaggle" in cmd for cmd in commands)
+    assert any("farfuntool>=" in cmd for cmd in commands)
+    assert any("kaggle>=" in cmd for cmd in commands)
+    # packages() 安装的内容必须与 pyproject.toml 的 colab extra 声明一致。
+    assert commands == [f"pip install -U '{pkg}'" for pkg in core._COLAB_PACKAGES]
 
 
 def test_copy_files_uses_dir_root_and_target() -> None:

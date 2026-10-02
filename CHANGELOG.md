@@ -22,6 +22,7 @@
 ### 修复
 
 - 移除未被实际使用的 `oauth2client` 依赖（源码中从未 import 过，属于历史遗留的空依赖）。
+- `packages()` 不再用裸 `pip install -U git+https://github.com/farfarfun/funtool.git` 和 `pip install -U kaggle` 静默拉取未知的最新版本：改为安装带版本下限的 `farfuntool>=0.6.22`（PyPI 发布名，导入名仍是 `funtool`）与 `kaggle>=1.6.17`（下限兼顾 `requires-python = ">=3.10"`，`kaggle>=2.0.0` 起要求 Python>=3.11），并在 `pyproject.toml` 新增 `[project.optional-dependencies].colab` 声明同样的下限，供依赖扫描工具识别（farfarfun/todo-list#687）。
 
 ### 说明：`notegoogle` -> `fungoogle` 改名（已完结，无需转发）
 

@@ -1,6 +1,6 @@
 # fungoogle
 
-个人 Google Colab 环境初始化脚本：挂载 Google Drive、创建工作目录、安装依赖（`funtool`、`kaggle`）、把 Drive 里的个人文件拷贝到 Colab 本地环境。是作者自用的 Colab 启动脚手架，不是通用工具库，路径（如 `/content/drive/My Drive/home`、`/root/workspace`）都是硬编码的个人配置。
+个人 Google Colab 环境初始化脚本：挂载 Google Drive、创建工作目录、安装依赖（`farfuntool`，导入名 `funtool`；`kaggle`）、把 Drive 里的个人文件拷贝到 Colab 本地环境。是作者自用的 Colab 启动脚手架，不是通用工具库，路径（如 `/content/drive/My Drive/home`、`/root/workspace`）都是硬编码的个人配置。
 
 > 注意：本仓库尚未真正发布过版本。PyPI 上已存在一个 `fungoogle`（0.0.1）包，其 wheel 内容只有一个空的 `funapi/__init__.py`，是本组织早年批量占位发布时留下的空壳——metadata 里的作者（`bingtao`）和 homepage（本仓库地址）都指向 farfarfun 组织自己，**不是别人的包**，但内容与当前源码无关。真正发布正式版本前需要先在这个占位版本之上递增版本号，不能假设名字是全新的。
 
@@ -31,7 +31,7 @@ init()
 `init()` 依次执行：
 
 1. `install_drive()`：挂载 `/content/drive`，创建 `/root/workspace` 工作目录；
-2. `packages()`：`pip install` 安装 `git+https://github.com/farfarfun/funtool.git` 和 `kaggle`；
+2. `packages()`：`pip install` 安装带版本下限的 `farfuntool>=0.6.22`（导入名 `funtool`，PyPI 发布名见 [NAMING.md](https://github.com/farfarfun/todo-list/blob/master/NAMING.md)）和 `kaggle>=1.6.17`；版本下限与 `pyproject.toml` 的 `colab` extra 一致；
 3. `copy_files()`：把 Drive 里 `home/local_files/` 目录下的文件拷贝到 Colab 本地的 `/root/`；
 4. `default_import()`：把 `packages` 目录加入 `sys.path` 并记录 pandas 版本作为环境检查。
 
