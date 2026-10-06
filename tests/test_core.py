@@ -1,5 +1,6 @@
 """测试 fungoogle.init.core 的公开函数。"""
 
+import os
 import sys
 import types
 from unittest.mock import patch
@@ -25,15 +26,15 @@ def test_run_failure_raises_with_context() -> None:
         core.run("echo hi")
 
 
-def test_packages_installs_farfuntool_and_kaggle_with_version_floor() -> None:
-    """packages() 应依次安装带版本下限的 farfuntool 与 kaggle，不再裸装最新版。"""
+def test_packages_installs_funutil_and_kaggle_with_version_floor() -> None:
+    """packages() 应依次安装带版本下限的 funutil 与 kaggle，且不强制升级。"""
     with patch("fungoogle.init.core.run") as mock_run:
         core.packages()
     commands = [call.args[0] for call in mock_run.call_args_list]
-    assert any("farfuntool>=" in cmd for cmd in commands)
+    assert any("funutil>=" in cmd for cmd in commands)
     assert any("kaggle>=" in cmd for cmd in commands)
     # packages() 安装的内容必须与 pyproject.toml 的 colab extra 声明一致。
-    assert commands == [f"pip install -U '{pkg}'" for pkg in core._COLAB_PACKAGES]
+    assert commands == [f"pip install '{pkg}'" for pkg in core._COLAB_PACKAGES]
 
 
 def test_copy_files_uses_dir_root_and_target() -> None:
@@ -60,13 +61,22 @@ def test_default_import_appends_packages_path() -> None:
         sys.path[:] = before
 
 
-def test_install_bash_sources_file_next_to_module() -> None:
-    """install_bash() 应引用与 core.py 同目录下的 bashrc.sh，不依赖当前工作目录。"""
-    with patch("fungoogle.init.core.run") as mock_run:
+def test_install_bash_adds_configured_path_to_current_process() -> None:
+    """install_bash() 应只使用显式配置更新当前 Python 进程的 PATH。"""
+    with patch.dict(
+        "os.environ",
+        {"FUNGOOGLE_EXTRA_PATH": "/custom/bin", "PATH": "/usr/bin"},
+        clear=True,
+    ):
         core.install_bash()
-    cmd = mock_run.call_args.args[0]
-    assert cmd.startswith("source ")
-    assert cmd.endswith("bashrc.sh")
+        assert os.environ["PATH"] == f"/custom/bin{os.pathsep}/usr/bin"
+
+
+def test_install_bash_does_nothing_without_configured_path() -> None:
+    """未设置路径配置时 install_bash() 不应修改 PATH。"""
+    with patch.dict("os.environ", {"PATH": "/usr/bin"}, clear=True):
+        core.install_bash()
+        assert os.environ["PATH"] == "/usr/bin"
 
 
 def test_install_drive_mounts_and_chdir_to_workspace() -> None:

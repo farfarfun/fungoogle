@@ -5,7 +5,6 @@
 """
 
 import os
-from pathlib import Path
 
 from farlog import getLogger
 from funshell import run_shell
@@ -41,24 +40,31 @@ def install_drive() -> None:
 
 
 def install_bash() -> None:
-    """加载仓库自带的 bashrc 片段（自用环境变量，如 conda PATH）。"""
-    bashrc = Path(__file__).with_name("bashrc.sh")
-    run(f"source {bashrc}")
+    """将 ``FUNGOOGLE_EXTRA_PATH`` 加入当前 Python 进程的 ``PATH``。
+
+    未设置该环境变量时不修改环境。多个目录使用当前平台的路径分隔符连接。
+    """
+    extra_path = os.environ.get("FUNGOOGLE_EXTRA_PATH")
+    if not extra_path:
+        return
+
+    path = os.environ.get("PATH")
+    os.environ["PATH"] = f"{extra_path}{os.pathsep}{path}" if path else extra_path
 
 
 # 与 pyproject.toml 的 [project.optional-dependencies].colab 保持一致，
 # 改动版本下限时两处一起改。
-_COLAB_PACKAGES = ("farfuntool>=0.6.22", "kaggle>=1.6.17")
+_COLAB_PACKAGES = ("funutil>=1.0.63", "kaggle>=1.6.17")
 
 
 def packages() -> None:
-    """安装 Colab 环境缺省的个人常用依赖（farfuntool，导入名 funtool；kaggle）。
+    """安装 Colab 环境缺省的个人常用依赖（funutil、kaggle）。
 
-    版本下限声明见 pyproject.toml 的 colab extra；这里固定版本号而非裸 `-U`，
-    避免每次运行都静默拉取未知的最新版本。
+    版本下限声明见 pyproject.toml 的 colab extra。已满足下限的已安装版本不会
+    被升级；首次安装时由 pip 在该约束范围内解析版本。
     """
     for package in _COLAB_PACKAGES:
-        run(f"pip install -U '{package}'")
+        run(f"pip install '{package}'")
 
 
 def default_import() -> None:
