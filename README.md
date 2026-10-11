@@ -16,7 +16,7 @@ cd fungoogle
 pip install -e .
 ```
 
-`google.colab` 仅 Colab notebook 环境自带，无需单独安装；离开 Colab 环境时只有 `install_drive()`/`default_import()` 实际调用到它才会报错，其余函数可正常导入和调用。
+`google.colab` 仅 Colab notebook 环境自带，无需单独安装；离开 Colab 环境时，只有 `install_drive()` 会因导入它而报错。`default_import()` 不依赖 `google.colab`，但需要环境中已安装 `pandas`；其余函数可正常导入和调用。
 
 ## 用法示例
 
@@ -33,7 +33,7 @@ init()
 1. `install_drive()`：挂载 `/content/drive`，创建 `/root/workspace` 工作目录；
 2. `packages()`：`pip install` 安装带版本下限的 `funutil>=1.0.63` 和 `kaggle>=1.6.17`；已满足下限的已安装版本不会被升级，版本下限与 `pyproject.toml` 的 `colab` extra 一致；
 3. `copy_files()`：把 Drive 里 `home/local_files/` 目录下的文件拷贝到 Colab 本地的 `/root/`；
-4. `default_import()`：把 `packages` 目录加入 `sys.path` 并记录 pandas 版本作为环境检查。
+4. `default_import()`：先导入 `pandas` 并记录版本作为环境检查，再把 `packages` 目录加入 `sys.path`。
 
 `install_bash()` 不属于 `init()` 流程。它只会将环境变量 `FUNGOOGLE_EXTRA_PATH` 的目录加入当前 Python 进程的 `PATH`；未设置时不执行任何操作。它不会加载 shell 配置文件，也不会修改调用 notebook 之外的 shell。
 
