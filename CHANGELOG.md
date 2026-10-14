@@ -23,6 +23,7 @@
 
 - 移除未被实际使用的 `oauth2client` 依赖（源码中从未 import 过，属于历史遗留的空依赖）。
 - `packages()` 改为安装组织正式包 `funutil>=1.0.63` 与 `kaggle>=1.6.17`，并移除 `-U`：已满足下限的已安装版本不再被强制升级。版本下限与 `pyproject.toml` 的 `[project.optional-dependencies].colab` 一致，供依赖扫描工具识别。
+  这里之所以不再装原先的 `farfuntool`：`farfarfun/funtool`（PyPI 发布名 `farfuntool`）已下线归档，其日志 / 路径 / 时间 / 转换等能力由 `funutil` 与 `farlog`、`farcache`、`funfile` 接手。`farfuntool` 在本仓库从未被 import，只是 `packages()` 往 Colab 里顺手装的常用包。
 
 ### 说明：`notegoogle` -> `fungoogle` 改名（已完结，无需转发）
 
